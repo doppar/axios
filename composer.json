@@ -1,0 +1,41 @@
+{
+    "name": "doppar/axios",
+    "description": "Doppar API Authentication package",
+    "type": "library",
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/doppar/axios/issues",
+        "source": "https://github.com/doppar/axios"
+    },
+    "authors": [
+        {
+            "name": "Mahedi Hasan",
+            "email": "mahedi@doppar.com"
+        }
+    ],
+    "require-dev": {
+        "mockery/mockery": "^1.6",
+        "phpunit/phpunit": "^11.5.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Doppar\\Axios\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": []
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "symfony/http-client": "*"
+    }
+}
