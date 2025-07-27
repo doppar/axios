@@ -2,6 +2,43 @@
 
 namespace Doppar\Axios\Http;
 
+/**
+ * Static proxy class for Doppar axios
+ *
+ * @method static to(string $url): self;
+ * @method static withMethod(string $method): self;
+ * @method static withHeaders(array $headers): self;
+ * @method static withQuery(array $query): self;
+ * @method static withBody($body): self;
+ * @method static withJson(array $json): self;
+ * @method static withOptions(array $options): self;
+ * @method static async(bool $async = true): self;
+ * @method static timeout(float $seconds): self;
+ * @method static retry(int $maxRetries, int $delayMs = 100): self;
+ * @method static withBasicAuth(string $username, string $password): self;
+ * @method static withBearerToken(string $token): self;
+ * @method static withMiddleware(callable $middleware): self;
+ * @method static get(): self;
+ * @method static post($data = null): self;
+ * @method static put($data = null): self;
+ * @method static patch($data = null): self;
+ * @method static delete(): self;
+ * @method static send(): self;
+ * @method static wait(): array;
+ * @method static json(): array;
+ * @method static text(): string;
+ * @method static status(): int;
+ * @method static successful(): bool;
+ * @method static failed(): bool;
+ * @method static headers(): array;
+ * @method static onSuccess(callable $callback): self;
+ * @method static onFailure(callable $callback): self;
+ * @method static download(string $savePath): self;
+ *
+ * @see \Doppar\Axios\Http\SymfonyHttpClient The underlying implementation
+ * @package Doppar\Axios\Http
+ */
+
 use Doppar\Axios\Http\SymfonyHttpClient;
 use Doppar\Axios\Http\Contracts\Httpor;
 
