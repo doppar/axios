@@ -1,6 +1,6 @@
 {
     "name": "doppar/axios",
-    "description": "Doppar API Authentication package",
+    "description": "Doppar Axios is a modern, feature-rich HTTP client package for PHP",
     "type": "library",
     "license": "MIT",
     "support": {
