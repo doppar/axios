@@ -11,39 +11,22 @@
 <a href="https://github.com/doppar/axios/blob/main/LICENSE"><img src="https://img.shields.io/github/license/doppar/axios" alt="License"></a>
 </p>
 
-## About Doppar Axios
-
-# Doppar Axios - Fluent HTTP Client for PHP
+## Doppar Axios - Fluent HTTP Client for PHP
 
 **Doppar Axios** is a modern, feature-rich HTTP client for PHP, inspired by the simplicity of JavaScript clients like Axios but built on top of Symfony's robust `HttpClient`. Does not depends on doppar internal core, you can use it any PHP application. It does not depend on any internal Doppar core, making it suitable for use in any PHP application.
 
 ---
 
-## ✨ Features
+## ✅ Features
 
-- ✅ **Fluent Interface**  
-  Clean, chainable syntax for building expressive requests.
-
-- 🚀 **Dual Mode Support**  
-  Easily switch between **synchronous** and **asynchronous** HTTP requests.
-
-- 📦 **Batch Processing**  
-  Send multiple requests in parallel using simple array syntax.
-
-- 📥 **Robust File Downloader**  
-  Stream large files efficiently with **progress tracking**.
-
-- ♻️ **Automatic Retries**  
-  Built-in retry mechanism for network and server failures.
-
-- 🔌 **Middleware Support**  
-  Hook into requests and responses with powerful middleware.
-
-- 🛑 **Comprehensive Error Handling**  
-  Fine-grained exception types like `ClientException`, `NetworkException`, and more.
-
-- 📬 **Convenient Response Helpers**  
-  Quick access to `json()`, `status()`, `headers()`, and success/failure callbacks.
+✔ **Fluent Interface** – Clean, chainable syntax for building requests  
+✔ **Dual Mode** – Supports both synchronous & asynchronous operations  
+✔ **Batch Processing** – Parallel request handling with simple array syntax  
+✔ **Robust Downloader** – Streamed file downloads with progress tracking  
+✔ **Automatic Retries** – Configurable retry logic for failed requests  
+✔ **Middleware Support** – Extensible request/response processing  
+✔ **Error Handling** – Comprehensive exception hierarchy  
+✔ **Response Helpers** – Built-in JSON parsing, status checks, and callbacks  
 
 ---
 
