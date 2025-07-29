@@ -23,6 +23,7 @@
 ✔ **Dual Mode** – Supports both synchronous & asynchronous operations  
 ✔ **Batch Processing** – Parallel request handling with simple array syntax  
 ✔ **Robust Downloader** – Streamed file downloads with progress tracking  
+✔ **File Upload Support** – Multipart form data handling for single and multiple files  
 ✔ **Automatic Retries** – Configurable retry logic for failed requests  
 ✔ **Middleware Support** – Extensible request/response processing  
 ✔ **Error Handling** – Comprehensive exception hierarchy  

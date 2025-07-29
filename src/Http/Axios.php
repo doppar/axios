@@ -31,9 +31,12 @@ namespace Doppar\Axios\Http;
  * @method static successful(): bool;
  * @method static failed(): bool;
  * @method static headers(): array;
- * @method static onSuccess(callable $callback): self;
- * @method static onFailure(callable $callback): self;
+ * @method static then(callable $callback): self;
+ * @method static catch(callable $callback): self;
  * @method static download(string $savePath): self;
+ * @method static withMultipart(array $fields): self
+ * @method static withProgress(callable $callback): self
+ * @method static ifSet($condition, callable $callback): self
  *
  * @see \Doppar\Axios\Http\SymfonyHttpClient The underlying implementation
  * @package Doppar\Axios\Http

@@ -258,6 +258,22 @@ class SymfonyHttpClient implements Httpor
     }
 
     /**
+     * Conditionally modify the request based on a truthy condition
+     *
+     * @param mixed $condition The condition to evaluate
+     * @param callable $callback The modification to apply if condition is truthy
+     * @return self
+     */
+    public function ifSet($condition, callable $callback): self
+    {
+        if ($condition) {
+            return $callback($this);
+        }
+
+        return $this;
+    }
+
+    /**
      * Execute a GET request
      *
      * @return self
@@ -276,6 +292,10 @@ class SymfonyHttpClient implements Httpor
     public function post($data = null): self
     {
         if ($data) {
+            if (isset($this->options['extra']['multipart'])) {
+                return $this->withMethod('POST')->send();
+            }
+
             $this->withJson($data);
         }
 
@@ -291,6 +311,10 @@ class SymfonyHttpClient implements Httpor
     public function put($data = null): self
     {
         if ($data) {
+            if (isset($this->options['extra']['multipart'])) {
+                return $this->withMethod('PUT')->send();
+            }
+
             $this->withJson($data);
         }
 
@@ -306,6 +330,10 @@ class SymfonyHttpClient implements Httpor
     public function patch($data = null): self
     {
         if ($data) {
+            if (isset($this->options['extra']['multipart'])) {
+                return $this->withMethod('PATCH')->send();
+            }
+
             $this->withJson($data);
         }
 
@@ -347,6 +375,13 @@ class SymfonyHttpClient implements Httpor
             $request = function () {
                 $filteredOptions = $this->options;
                 unset($filteredOptions['max_retries'], $filteredOptions['retry_delay']);
+
+                // Handle multipart if present
+                if (isset($filteredOptions['extra']['multipart'])) {
+                    $filteredOptions['body'] = $filteredOptions['extra']['multipart'];
+                    unset($filteredOptions['extra']['multipart']);
+                    unset($filteredOptions['json'], $filteredOptions['body']);
+                }
 
                 return $this->client->request(
                     $this->method,
@@ -534,7 +569,7 @@ class SymfonyHttpClient implements Httpor
      * @param callable $callback Function to execute on successful response
      * @return self
      */
-    public function onSuccess(callable $callback): self
+    public function then(callable $callback): self
     {
         if ($this->successful()) {
             $callback($this->response);
@@ -549,7 +584,7 @@ class SymfonyHttpClient implements Httpor
      * @param callable $callback Function to execute on failed response
      * @return self
      */
-    public function onFailure(callable $callback): self
+    public function catch(callable $callback): self
     {
         if ($this->failed()) {
             $callback($this->response);
@@ -695,5 +730,77 @@ class SymfonyHttpClient implements Httpor
         }
 
         return $this;
+    }
+
+    /**
+     * Set multipart form data for file uploads
+     *
+     * @param array $fields Associative array of fields (can include \SplFileInfo for files)
+     * @return self
+     * @throws \InvalidArgumentException If file is not readable
+     */
+    public function withMultipart(array $fields): self
+    {
+        $this->options['extra']['multipart'] = [];
+
+        foreach ($fields as $name => $value) {
+            if (is_array($value)) {
+                foreach ($value as $arrayValue) {
+                    $this->addMultipartField($name . '[]', $arrayValue);
+                }
+            } else {
+                $this->addMultipartField($name, $value);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add a single field to multipart data
+     *
+     * @param string $name Field name
+     * @param mixed $value Field value
+     * @throws \InvalidArgumentException If file is not readable
+     */
+    private function addMultipartField(string $name, $value): void
+    {
+        if ($value instanceof \SplFileInfo) {
+            $filePath = $value->getRealPath();
+
+            if (!is_readable($filePath)) {
+                throw new \InvalidArgumentException("File {$filePath} is not readable");
+            }
+
+            $resource = @fopen($filePath, 'r');
+            if ($resource === false) {
+                throw new \InvalidArgumentException("Could not open file {$filePath}");
+            }
+
+            $this->options['extra']['multipart'][] = [
+                'name' => $name,
+                'contents' => $resource,
+                'filename' => $value->getFilename(),
+                'headers' => [
+                    'Content-Type' => mime_content_type($filePath) ?: 'application/octet-stream'
+                ]
+            ];
+        } else {
+            $this->options['extra']['multipart'][] = [
+                'name' => $name,
+                'contents' => is_scalar($value) ? (string)$value : json_encode($value)
+            ];
+        }
+    }
+
+    public function __destruct()
+    {
+        if (isset($this->options['extra']['multipart'])) {
+            foreach ($this->options['extra']['multipart'] as $part) {
+                if (is_resource($part['contents'] ?? null)) {
+                    fclose($part['contents']);
+                }
+            }
+        }
     }
 }

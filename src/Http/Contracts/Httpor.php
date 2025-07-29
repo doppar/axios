@@ -210,7 +210,7 @@ interface Httpor
      * @param callable $callback Function to execute on success
      * @return self
      */
-    public function onSuccess(callable $callback): self;
+    public function then(callable $callback): self;
 
     /**
      * Register failure callback
@@ -218,7 +218,7 @@ interface Httpor
      * @param callable $callback Function to execute on failure
      * @return self
      */
-    public function onFailure(callable $callback): self;
+    public function catch(callable $callback): self;
 
     /**
      * Download response content to file
@@ -227,4 +227,22 @@ interface Httpor
      * @return self
      */
     public function download(string $savePath): self;
+
+    /**
+     * Set multipart form data for file uploads
+     *
+     * @param array $fields Associative array of fields (can include \SplFileInfo for files)
+     * @return self
+     * @throws \InvalidArgumentException If file is not readable
+     */
+    public function withMultipart(array $fields): self;
+
+    /**
+     * Conditionally modify the request based on a truthy condition
+     *
+     * @param mixed $condition The condition to evaluate
+     * @param callable $callback The modification to apply if condition is truthy
+     * @return self
+     */
+    public function ifSet($condition, callable $callback): self;
 }
