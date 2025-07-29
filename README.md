@@ -15,9 +15,12 @@
 
 **Doppar Axios** is a modern, feature-rich HTTP client for PHP, inspired by the simplicity of JavaScript clients like Axios but built on top of Symfony's robust `HttpClient`. Does not depends on doppar internal core, you can use it any PHP application. It does not depend on any internal Doppar core, making it suitable for use in any PHP application.
 
+## Documentation
+Read the documentation from doppar official site [Doppar Axios](https://doppar.com/versions/3.x/doppar-axios.html)
+
 ---
 
-## ✅ Features
+## Features
 
 ✔ **Fluent Interface** – Clean, chainable syntax for building requests  
 ✔ **Dual Mode** – Supports both synchronous & asynchronous operations  
@@ -31,7 +34,7 @@
 
 ---
 
-## 💡 Why Doppar Axios?
+## Why Doppar Axios?
 
 - Built on **Symfony HttpClient** for performance and reliability
 - **Memory-efficient** with streamed response handling
@@ -41,7 +44,7 @@
 
 ---
 
-## 🧰 Perfect For:
+## Perfect For:
 
 - REST API integrations
 - Web scraping tasks
