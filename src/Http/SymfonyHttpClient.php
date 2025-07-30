@@ -32,6 +32,8 @@ use Doppar\Axios\Exceptions\NetworkException;
  */
 class SymfonyHttpClient implements Httpor
 {
+    use InteractsWithClientScoping, InteractsWithResponse, InteractsWithHttpVersion;
+
     /** @var array Request configuration options */
     private array $options = [];
 
@@ -366,6 +368,8 @@ class SymfonyHttpClient implements Httpor
     public function send(): self
     {
         try {
+            $this->options = array_merge($this->options, $this->prepareHttp2Options());
+
             if (!empty($this->batchUrls)) {
                 return $this->sendBatch();
             }
