@@ -69,7 +69,7 @@ class SymfonyHttpClientTest extends TestCase
 
         $response = $http->to('https://jsonplaceholder.typicode.com/posts/1')
             ->get()
-            ->text();
+            ->body();
 
         $this->assertEquals('OK', $response);
     }
@@ -208,5 +208,151 @@ class SymfonyHttpClientTest extends TestCase
 
         // Verify auth header was set by checking successful request
         $this->assertEquals(200, $response->status());
+    }
+
+    public function test_with_scope_merges_configuration()
+    {
+        $http = $this->createHttpClient([new MockResponse('OK')]);
+
+        $scopedClient = $http->withScope([
+            'headers' => ['X-Test' => 'value'],
+            'query' => ['page' => 1]
+        ]);
+
+        $response = $scopedClient->to('https://api.example.com')
+            ->withHeaders(['X-Another' => 'test'])
+            ->withQuery(['limit' => 10])
+            ->get()
+            ->body();
+
+        $this->assertEquals('OK', $response);
+    }
+
+    public function test_with_base_url_sets_base_uri()
+    {
+        $responses = [
+            new MockResponse('Base URL response')
+        ];
+
+        $http = $this->createHttpClient($responses);
+
+        $clientWithBase = $http->withBaseUrl('https://api.example.com/v1');
+        $response = $clientWithBase->to('/endpoint')->get()->body();
+
+        $this->assertEquals('Base URL response', $response);
+    }
+
+    public function test_with_follow_redirects_configures_redirects()
+    {
+        $responses = [
+            new MockResponse('Redirected', ['http_code' => 301]),
+            new MockResponse('Final', ['http_code' => 200])
+        ];
+
+        $http = $this->createHttpClient($responses);
+        $response = $http->withFollowRedirects(3)
+            ->to('https://api.example.com/redirect')
+            ->get();
+
+        $this->assertTrue( $response->redirect());
+    }
+
+    public function test_with_verify_peer_configures_ssl_verification()
+    {
+        $responses = [new MockResponse('Secure')];
+
+        $http = $this->createHttpClient($responses);
+        $response = $http->withVerifyPeer(false)
+            ->to('https://insecure.example.com')
+            ->get()
+            ->body();
+
+        $this->assertEquals('Secure', $response);
+    }
+
+    public function test_body_returns_raw_response_content()
+    {
+        $content = 'Raw response content';
+        $http = $this->createHttpClient([new MockResponse($content)]);
+
+        $response = $http->to('https://api.example.com')
+            ->get()
+            ->body();
+
+        $this->assertEquals($content, $response);
+    }
+
+    public function test_object_returns_decoded_json_object()
+    {
+        $data = ['id' => 1, 'name' => 'Test'];
+        $http = $this->createHttpClient([new MockResponse(json_encode($data))]);
+
+        $object = $http->to('https://api.example.com')
+            ->get()
+            ->object();
+
+        $this->assertIsObject($object);
+        $this->assertEquals(1, $object->id);
+        $this->assertEquals('Test', $object->name);
+    }
+
+    public function test_collect_returns_collection_instance()
+    {
+        $data = ['items' => [['id' => 1], ['id' => 2]]];
+        $http = $this->createHttpClient([new MockResponse(json_encode($data))]);
+
+        // Mock the Collection class existence
+        if (!class_exists(\Phaseolies\Support\Collection::class)) {
+            eval('namespace Phaseolies\Support; class Collection {}');
+        }
+
+        $collection = $http->to('https://api.example.com')
+            ->get()
+            ->collect('items');
+
+        $this->assertInstanceOf(\Phaseolies\Support\Collection::class, $collection);
+    }
+
+    public function test_header_returns_specific_header_value()
+    {
+        $http = $this->createHttpClient([
+            new MockResponse('', [
+                'http_code' => 200,
+                'response_headers' => [
+                    'content-type' => ['application/json'],
+                    'x-custom' => ['test-value']
+                ]
+            ])
+        ]);
+
+        $response = $http->to('https://api.example.com')
+            ->get();
+
+        $this->assertEquals('application/json', $response->header('content-type'));
+        $this->assertEquals('test-value', $response->header('x-custom'));
+    }
+
+    public function test_with_http2_enables_http2_support()
+    {
+        $http = $this->createHttpClient([new MockResponse('HTTP/2')]);
+
+        $response = $http->withHttp2()
+            ->to('https://http2.example.com')
+            ->get()
+            ->body();
+
+        $this->assertEquals('HTTP/2', $response);
+    }
+
+    public function test_without_http2_disables_http2_support()
+    {
+        $http = $this->createHttpClient([new MockResponse('HTTP/1.1')]);
+
+        $response = $http->withoutHttp2()
+            ->to('https://example.com')
+            ->get()
+            ->body();
+
+        $this->assertEquals('HTTP/1.1', $response);
     }
 }

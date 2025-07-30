@@ -509,65 +509,6 @@ class SymfonyHttpClient implements Httpor
     }
 
     /**
-     * Get raw response body content
-     *
-     * @return string
-     * @throws \RuntimeException If no response available
-     */
-    public function text(): string
-    {
-        $this->ensureResponse();
-
-        return $this->response->getContent();
-    }
-
-    /**
-     * Get HTTP status code
-     *
-     * @return int
-     * @throws \RuntimeException If no response available
-     */
-    public function status(): int
-    {
-        $this->ensureResponse();
-
-        return $this->response->getStatusCode();
-    }
-
-    /**
-     * Check if request was successful (2xx status)
-     *
-     * @return bool
-     */
-    public function successful(): bool
-    {
-        return $this->status() >= 200 && $this->status() < 300;
-    }
-
-    /**
-     * Check if request failed (4xx or 5xx status)
-     *
-     * @return bool
-     */
-    public function failed(): bool
-    {
-        return $this->status() >= 400;
-    }
-
-    /**
-     * Get response headers
-     *
-     * @return array
-     * @throws \RuntimeException If no response available
-     */
-    public function headers(): array
-    {
-        $this->ensureResponse();
-
-        return $this->response->getHeaders();
-    }
-
-    /**
      * Register success callback
      *
      * @param callable $callback Function to execute on successful response

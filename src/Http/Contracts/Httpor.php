@@ -170,13 +170,6 @@ interface Httpor
     public function json(): array;
 
     /**
-     * Get response body as raw text
-     *
-     * @return string Response content
-     */
-    public function text(): string;
-
-    /**
      * Get response status code
      *
      * @return int HTTP status code
@@ -245,4 +238,95 @@ interface Httpor
      * @return self
      */
     public function ifSet($condition, callable $callback): self;
+
+    /**
+     * Get the raw response body
+     *
+     * @return string Raw response body content
+     */
+    public function body(): string;
+
+    /**
+     * Get the response body as a stdClass object
+     *
+     * @return object Response data parsed as object
+     */
+    public function object(): object;
+
+    /**
+     * Get the response data as a collection (optionally for a specific JSON key)
+     *
+     * @param string|null $key Optional key to extract from JSON response
+     * @return mixed Collection instance or null if key doesn't exist
+     */
+    public function collect(?string $key = null);
+
+    /**
+     * Check if the response is a redirect
+     *
+     * @return bool Whether the response is a redirect (3xx status)
+     */
+    public function redirect(): bool;
+
+    /**
+     * Check if the response indicates a client error (4xx status)
+     *
+     * @return bool Whether the response has a client error status
+     */
+    public function clientError(): bool;
+
+    /**
+     * Get a specific response header
+     *
+     * @param string $header Header name to retrieve
+     * @return string Header value or empty string if not present
+     */
+    public function header(string $header): string;
+
+    /**
+     * Enable or disable SSL peer verification
+     *
+     * @param bool $verify Whether to verify SSL peer
+     * @return self
+     */
+    public function withVerifyPeer(bool $verify = true): self;
+
+    /**
+     * Configure automatic redirect following
+     *
+     * @param int $max Maximum number of redirects to follow
+     * @return self
+     */
+    public function withFollowRedirects(int $max = 5): self;
+
+    /**
+     * Set a base URL for relative request paths
+     *
+     * @param string $baseUrl Base URL to prepend to relative paths
+     * @return self
+     */
+    public function withBaseUrl(string $baseUrl): self;
+
+    /**
+     * Set multiple request options using a scope/context
+     *
+     * @param array $options Associative array of scoped options
+     * @return self
+     */
+    public function withScope(array $options): self;
+
+    /**
+     * Enable HTTP/2 for the request
+     *
+     * @param bool $forceHttp2ForHttpUrls Whether to force HTTP/2 even for http:// URLs
+     * @return self
+     */
+    public function withHttp2(bool $forceHttp2ForHttpUrls = false): self;
+
+    /**
+     * Disable HTTP/2 for the request
+     *
+     * @return self
+     */
+    public function withoutHttp2(): self;
 }

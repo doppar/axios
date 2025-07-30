@@ -2,7 +2,6 @@
 
 namespace Doppar\Axios\Http;
 
-use Phaseolies\Support\Collection;
 use RuntimeException;
 
 trait InteractsWithResponse
@@ -45,11 +44,17 @@ trait InteractsWithResponse
      * Get the response as a Collection
      *
      * @param string|null $key Optional key to extract from response
-     * @return Collection
+     * @return \Phaseolies\Support\Collection
      * @throws RuntimeException If no response available
      */
-    public function collect(?string $key = null): Collection
+    public function collect(?string $key = null)
     {
+        if (!class_exists(\Phaseolies\Support\Collection::class)) {
+            throw new RuntimeException(
+                "The 'collect()' helper requires the Doppar Framework"
+            );
+        }
+
         $data = $this->json();
 
         if ($key !== null) {
@@ -59,18 +64,10 @@ trait InteractsWithResponse
             $data = $data[$key];
         }
 
-        return new Collection(static::class, is_array($data) ? $data : [$data]);
-    }
-
-    /**
-     * Check if request was successful (2xx status)
-     *
-     * @return bool
-     * @throws RuntimeException If no response available
-     */
-    public function successful(): bool
-    {
-        return $this->status() >= 200 && $this->status() < 300;
+        return new \Phaseolies\Support\Collection(
+            static::class,
+            is_array($data) ? $data : [$data]
+        );
     }
 
     /**
@@ -149,5 +146,28 @@ trait InteractsWithResponse
         if ($this->response === null) {
             throw new RuntimeException('No response available. Did you send the request?');
         }
+    }
+
+    /**
+     * Get HTTP status code
+     *
+     * @return int
+     * @throws \RuntimeException If no response available
+     */
+    public function status(): int
+    {
+        $this->ensureResponse();
+
+        return $this->response->getStatusCode();
+    }
+
+    /**
+     * Check if request was successful (2xx status)
+     *
+     * @return bool
+     */
+    public function successful(): bool
+    {
+        return $this->status() >= 200 && $this->status() < 300;
     }
 }

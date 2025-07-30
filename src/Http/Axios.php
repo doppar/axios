@@ -26,17 +26,28 @@ namespace Doppar\Axios\Http;
  * @method static send(): self;
  * @method static wait(): array;
  * @method static json(): array;
- * @method static text(): string;
+ * @method static body(): string;
  * @method static status(): int;
  * @method static successful(): bool;
  * @method static failed(): bool;
+ * @method static object(): object;
+ * @method static collect(?string $key = null);
+ * @method static redirect(): bool;
+ * @method static clientError(): bool;
  * @method static headers(): array;
+ * @method static header(string $header): string;
  * @method static then(callable $callback): self;
  * @method static catch(callable $callback): self;
  * @method static download(string $savePath): self;
  * @method static withMultipart(array $fields): self
  * @method static withProgress(callable $callback): self
  * @method static ifSet($condition, callable $callback): self
+ * @method static withVerifyPeer(bool $verify = true): self;
+ * @method static withFollowRedirects(int $max = 5): self;
+ * @method static withBaseUrl(string $baseUrl): self;
+ * @method static withScope(array $options): self;
+ * @method static withHttp2(bool $forceHttp2ForHttpUrls = false): self;
+ * @method static withoutHttp2(): self;
  *
  * @see \Doppar\Axios\Http\SymfonyHttpClient The underlying implementation
  * @package Doppar\Axios\Http
