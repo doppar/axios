@@ -41,4 +41,20 @@ trait InteractsWithHttpVersion
 
         return $clone;
     }
+
+    /**
+     * Prepare HTTP version options for the request
+     *
+     * @return array
+     */
+    private function prepareHttp2Options(): array
+    {
+        if ($this->httpVersion === null) {
+            return [];
+        }
+
+        return [
+            'http_version' => $this->httpVersion
+        ];
+    }
 }
