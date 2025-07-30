@@ -13,6 +13,9 @@
             "email": "mahedi@doppar.com"
         }
     ],
+    "require": {
+        "symfony/http-client": "^7.3"
+    },
     "require-dev": {
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^11.5.3"
@@ -34,8 +37,5 @@
         "sort-packages": true
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
-    "require": {
-        "symfony/http-client": "*"
-    }
+    "prefer-stable": true
 }
