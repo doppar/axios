@@ -48,6 +48,7 @@ namespace Doppar\Axios\Http;
  * @method static withScope(array $options): self;
  * @method static withHttp2(bool $forceHttp2ForHttpUrls = false): self;
  * @method static withoutHttp2(): self;
+ * @method static asForm(bool $asForm = true): self;
  *
  * @see \Doppar\Axios\Http\SymfonyHttpClient The underlying implementation
  * @package Doppar\Axios\Http

@@ -239,7 +239,7 @@ class SymfonyHttpClient implements Httpor
      * @param string $token Authorization token
      * @return self
      */
-    public function withBearerToken(string $token): self
+    public function withBearerToken(#[\SensitiveParameter] string $token): self
     {
         $this->options['auth_bearer'] = $token;
 
@@ -294,14 +294,58 @@ class SymfonyHttpClient implements Httpor
     public function post($data = null): self
     {
         if ($data) {
-            if (isset($this->options['extra']['multipart'])) {
-                return $this->withMethod('POST')->send();
-            }
-
-            $this->withJson($data);
+            $this->handleFormData($data);
         }
 
         return $this->withMethod('POST')->send();
+    }
+
+    /**
+     * Set the request to send data as application/x-www-form-urlencoded
+     *
+     * @param bool $asForm Whether to send as form data (default true)
+     * @return self
+     */
+    public function asForm(bool $asForm = true): self
+    {
+        if ($asForm) {
+            $this->options['headers']['Content-Type'] = 'application/x-www-form-urlencoded';
+
+            // Convert array body to form-urlencoded string if needed
+            if (isset($this->options['body']) && is_array($this->options['body'])) {
+                $this->options['body'] = http_build_query($this->options['body'], '', '&');
+            }
+
+            // Ensure json payload doesn't conflict
+            if (isset($this->options['json'])) {
+                unset($this->options['json']);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Handle form-urlencoded data for POST/PUT/PATCH requests
+     * 
+     * @param mixed $data The input data
+     * @return void
+     */
+    private function handleFormData($data): void
+    {
+        if (isset($this->options['extra']['multipart'])) {
+            return;
+        }
+
+        // Handle form-urlencoded requests
+        if (
+            isset($this->options['headers']['Content-Type']) &&
+            str_contains($this->options['headers']['Content-Type'], 'application/x-www-form-urlencoded')
+        ) {
+            $this->withBody(is_array($data) ? http_build_query($data, '', '&') : $data);
+        } else {
+            $this->withJson($data);
+        }
     }
 
     /**
@@ -313,11 +357,7 @@ class SymfonyHttpClient implements Httpor
     public function put($data = null): self
     {
         if ($data) {
-            if (isset($this->options['extra']['multipart'])) {
-                return $this->withMethod('PUT')->send();
-            }
-
-            $this->withJson($data);
+            $this->handleFormData($data);
         }
 
         return $this->withMethod('PUT')->send();
@@ -332,11 +372,7 @@ class SymfonyHttpClient implements Httpor
     public function patch($data = null): self
     {
         if ($data) {
-            if (isset($this->options['extra']['multipart'])) {
-                return $this->withMethod('PATCH')->send();
-            }
-
-            $this->withJson($data);
+            $this->handleFormData($data);
         }
 
         return $this->withMethod('PATCH')->send();

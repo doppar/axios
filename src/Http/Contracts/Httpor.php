@@ -149,6 +149,14 @@ interface Httpor
     public function delete(): self;
 
     /**
+     * Set the request to send data as application/x-www-form-urlencoded
+     *
+     * @param bool $asForm Whether to send as form data (default true)
+     * @return self
+     */
+    public function asForm(bool $asForm = true): self;
+
+    /**
      * Send the configured request
      *
      * @return self
