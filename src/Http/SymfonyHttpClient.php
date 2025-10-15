@@ -66,6 +66,19 @@ class SymfonyHttpClient implements Httpor
 
     /** @var callable|null Progress callback for downloads */
     private $progressCallback = null;
+    
+    /** @var callable|null Global hook called after each request */
+    private static $afterRequestHook = null;
+
+    /**
+     * Set a global hook to be called after each HTTP request
+     * 
+     * @param callable|null $hook Callback(string $method, string $url, float $duration, ?int $status, bool $successful)
+     */
+    public static function setAfterRequestHook(?callable $hook): void
+    {
+        self::$afterRequestHook = $hook;
+    }
 
     /**
      * Constructor - Initializes the HTTP client with global options
@@ -403,6 +416,8 @@ class SymfonyHttpClient implements Httpor
      */
     public function send(): self
     {
+        $startTime = microtime(true);
+        
         try {
             $this->options = array_merge($this->options, $this->prepareHttp2Options());
 
@@ -445,6 +460,7 @@ class SymfonyHttpClient implements Httpor
                     $this->response = $request();
 
                     if ($this->response->getStatusCode() < 500) {
+                        $this->callAfterRequestHook($startTime);
                         return $this;
                     }
 
@@ -588,6 +604,35 @@ class SymfonyHttpClient implements Httpor
         }
 
         return $options;
+    }
+    
+    /**
+     * Call the global after request hook if set
+     */
+    private function callAfterRequestHook(float $startTime): void
+    {
+        if (self::$afterRequestHook === null) {
+            return;
+        }
+        
+        $duration = (microtime(true) - $startTime) * 1000;
+        $status = null;
+        $successful = false;
+        
+        try {
+            if ($this->response) {
+                $status = $this->response->getStatusCode();
+                $successful = $status >= 200 && $status < 300;
+            }
+        } catch (\Throwable $e) {
+            // Ignore errors when getting status
+        }
+        
+        try {
+            call_user_func(self::$afterRequestHook, $this->method, $this->url, $duration, $status, $successful);
+        } catch (\Throwable $e) {
+            // Silently ignore hook errors to not break the request
+        }
     }
 
     /**
