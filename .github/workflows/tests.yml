@@ -13,13 +13,7 @@ jobs:
   tests:
     runs-on: ubuntu-22.04
 
-    strategy:
-      fail-fast: true
-      matrix:
-        php: [8.3, 8.4]
-        doppar: [2]
-
-    name: PHP ${{ matrix.php }} - Doppar ${{ matrix.doppar }}
+    name: PHP 8.5
 
     steps:
       - name: Checkout code
@@ -28,7 +22,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
+          php-version: '8.5'
           extensions: dom, curl, libxml, mbstring, zip
           ini-values: error_reporting=E_ALL
           tools: composer:v2
