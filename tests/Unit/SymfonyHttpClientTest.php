@@ -17,7 +17,6 @@ class SymfonyHttpClientTest extends TestCase
 
         $reflection = new \ReflectionClass($http);
         $property = $reflection->getProperty('client');
-        $property->setAccessible(true);
         $property->setValue($http, new MockHttpClient($responses));
 
         return $http;

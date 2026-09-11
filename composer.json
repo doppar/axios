@@ -14,11 +14,12 @@
         }
     ],
     "require": {
-        "symfony/http-client": "^7.4"
+        "php": "^8.5",
+        "symfony/http-client": "^8.1"
     },
     "require-dev": {
         "mockery/mockery": "^1.6",
-        "phpunit/phpunit": "^12.1.5"
+        "phpunit/phpunit": "^13.2"
     },
     "autoload": {
         "psr-4": {
@@ -27,7 +28,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.x-dev"
+            "dev-master": "4.x-dev"
         }
     },
     "config": {
