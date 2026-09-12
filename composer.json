@@ -19,6 +19,7 @@
     },
     "require-dev": {
         "mockery/mockery": "^1.6",
+        "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^13.2"
     },
     "autoload": {
@@ -35,5 +36,8 @@
         "sort-packages": true
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "scripts": {
+        "analyse": "vendor/bin/phpstan analyse --memory-limit=1G"
+    }
 }
