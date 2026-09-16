@@ -16,51 +16,15 @@
 **Doppar Axios** is a modern, feature-rich HTTP client for PHP, inspired by the simplicity of JavaScript clients like Axios but built on top of Symfony's robust `HttpClient`. Does not depends on doppar internal core, you can use it any PHP application. It does not depend on any internal Doppar core, making it suitable for use in any PHP application.
 
 ## Documentation
-Read the documentation from doppar official site [Doppar Axios](https://doppar.com/versions/3.x/doppar-axios.html)
-
----
-
-## Features
-
-✔ **Fluent Interface** – Clean, chainable syntax for building requests  
-✔ **Dual Mode** – Supports both synchronous & asynchronous operations  
-✔ **Batch Processing** – Parallel request handling with simple array syntax  
-✔ **Robust Downloader** – Streamed file downloads with progress tracking  
-✔ **File Upload Support** – Multipart form data handling for single and multiple files  
-✔ **Automatic Retries** – Configurable retry logic for failed requests  
-✔ **Middleware Support** – Extensible request/response processing  
-✔ **Error Handling** – Comprehensive exception hierarchy  
-✔ **Response Helpers** – Built-in JSON parsing, status checks, and callbacks  
-
----
-
-## Why Doppar Axios?
-
-- Built on **Symfony HttpClient** for performance and reliability
-- **Memory-efficient** with streamed response handling
-- **Familiar and intuitive** API similar to JS/Node ecosystems
-- Handles real-world issues like timeouts, retries, and large file downloads
-- Production-ready with composable, extensible design
-
----
-
-## Perfect For:
-
-- REST API integrations
-- Web scraping tasks
-- Microservice communication
-- File downloads/uploads
-- Any PHP app needing advanced HTTP features
-
----
+Read the documentation from doppar official site [Doppar Axios](https://doppar.com/versions/4.x/doppar-axios)
 
 ## Contributing
 
-Thank you for considering contributing to the Doppar framework! The contribution guide can be found in the [Doppar documentation](https://doppar.com/versions/3.x/contributions.html).
+Thank you for considering contributing to the Doppar framework! The contribution guide can be found in the [Doppar documentation](https://doppar.com/versions/4.x/contributions).
 
 ## Code of Conduct
 
-In order to ensure that the Doppar community is welcoming to all, please review and abide by the [Code of Conduct](https://doppar.com/versions/3.x/contributions.html#code-of-conduct).
+In order to ensure that the Doppar community is welcoming to all, please review and abide by the [Code of Conduct](https://doppar.com/versions/4.x/contributions#code-of-conduct).
 
 ## Security Vulnerabilities
 
