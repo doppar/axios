@@ -1,5 +1,15 @@
 # Release Notes
 
+## 4.0.0 - 2026-09-16
+
+### What's Changed
+
+* bump to php8.5 by [@techmahedy](https://github.com/techmahedy) in https://github.com/doppar/axios/pull/4
+* fix phpstan error by [@techmahedy](https://github.com/techmahedy) in https://github.com/doppar/axios/pull/5
+* readme.md updated for 4.x version: by [@techmahedy](https://github.com/techmahedy) in https://github.com/doppar/axios/pull/6
+
+**Full Changelog**: https://github.com/doppar/axios/compare/v1.6.2...4.0.0
+
 ## v1.6.2 - 2025-11-29
 
 ### What's Changed
